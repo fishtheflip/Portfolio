@@ -1,47 +1,47 @@
 type Project = {
   title: string;
   team: string;
+  sector: string;
   accent: string;
-  metrics: string[];
+  technologies: string[];
 };
 
 type Experience = {
   name: string;
   role: string;
   footnote: string;
-  url: string;
 };
 
 type Link = {
   name: string;
   url: string;
   external?: boolean;
+  download?: boolean;
 };
 
 const experiences: Experience[] = [
-  { name: 'Tele2', role: 'Telecom Services', footnote: '3', url: 'https://tele2.kz/new' },
-  { name: 'Kaspi.kz', role: 'Banking Product', footnote: '3', url: 'https://kaspi.kz/' },
-  { name: 'Eco City Bank', role: 'Banking Services', footnote: '1', url: 'https://www.bcc.kz/en/' },
-  { name: 'Uchet.kz', role: 'Business Services', footnote: '1', url: 'https://uchet.kz/' },
-  { name: 'Vite Academy', role: 'EdTech', footnote: '1', url: 'https://www.vite.dance/landing' },
+  { name: 'Tele2', role: 'Telecom Services', footnote: '3' },
+  { name: 'Kaspi.kz', role: 'Banking Product', footnote: '3' },
+  { name: 'Eco City Bank', role: 'Banking Services', footnote: '1' },
+  { name: 'Uchet.kz', role: 'Business Services', footnote: '1' },
+  { name: 'Vite Academy', role: 'EdTech', footnote: '1' },
 ];
 
 const links: Link[] = [
-  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/andrei-parkhomenko/', external: true },
   { name: 'Telegram', url: 'https://t.me/fishrockk', external: true },
-  { name: 'GitHub', url: 'https://github.com/fishtheflip', external: true },
-  { name: 'Download CV', url: '#contact' },
+  { name: 'Download CV', url: `${import.meta.env.BASE_URL}andrey_parkhomenko_fullstack.pdf`, download: true },
 ];
 
 const technologies = [
+  'JavaScript',
   'React',
   'Vue',
   'Angular',
   'Node.js',
-  'HTML/CSS',
-  'JavaScript',
   'Java',
-  'Go',
+  'Golang',
+  'PostgreSQL',
+  'HTML/CSS',
   'TypeScript',
   'Redux',
   'Zustand',
@@ -66,38 +66,44 @@ const projects: Project[] = [
   {
     title: 'Support Operation Dashboard',
     team: 'Tele2',
+    sector: 'Telecom',
     accent: '#e9ff70',
-    metrics: ['Calls', 'Cases', 'CRM'],
+    technologies: ['React', 'TypeScript', 'Microservices', 'Go'],
   },
   {
     title: 'Counterparty Verification Tool',
     team: 'Uchet.kz',
+    sector: 'B2B Services',
     accent: '#8bd3ff',
-    metrics: ['Signals', 'Briefs', 'Risks'],
+    technologies: ['Vue', 'Nuxt', 'Node.js'],
   },
   {
     title: 'Education Platform',
     team: 'Vite Academy',
+    sector: 'EdTech',
     accent: '#ffb3c7',
-    metrics: ['Review', 'Notes', 'Handoff'],
+    technologies: ['React Native', 'Node.js'],
   },
   {
     title: 'QR-Based Promotion Flow',
     team: 'Altel',
+    sector: 'Telecom',
     accent: '#a7f3d0',
-    metrics: ['Runs', 'Memory', 'Audit'],
+    technologies: ['React', 'Next.js'],
   },
   {
     title: 'Map-Based CRM System',
     team: 'Kaspi.kz',
+    sector: 'Fintech',
     accent: '#ffd166',
-    metrics: ['Drops', 'Stock', 'CRM'],
+    technologies: ['Vue', 'Node.js'],
   },
   {
     title: 'Merchant Dashboard',
     team: 'Eco City Bank',
+    sector: 'Banking',
     accent: '#c4b5fd',
-    metrics: ['Mood', 'Sleep', 'Care'],
+    technologies: ['React', 'Angular', 'Node.js'],
   },
 ];
 
@@ -108,20 +114,23 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     <article className={`project-card ${visualTone}`} style={{ '--accent': project.accent } as React.CSSProperties}>
       <div className="project-card-inner">
         <div className="project-visual" aria-hidden="true">
-          <div className="visual-topline">
-            <span />
-            <span />
-            <span />
+          <div className="visual-meta">
+            <span>{project.sector}</span>
           </div>
-          <div className="visual-grid">
-            <div className="visual-pane primary">
-              <span>{String(index + 1).padStart(2, '0')}</span>
-            </div>
-            <div className="visual-pane stack">
-              {project.metrics.map((metric) => (
-                <i key={metric}>{metric}</i>
-              ))}
-            </div>
+          <div className={`architecture-map map-${(index % 3) + 1}`}>
+            <span className="project-number">{String(index + 1).padStart(2, '0')}</span>
+            <i className="node node-a" />
+            <i className="node node-b" />
+            <i className="node node-c" />
+            <i className="node node-d" />
+            <i className="connector connector-a" />
+            <i className="connector connector-b" />
+            <i className="connector connector-c" />
+          </div>
+          <div className="project-stack">
+            {project.technologies.map((technology) => (
+              <span key={technology}>{technology}</span>
+            ))}
           </div>
         </div>
         <div className="project-copy">
@@ -139,9 +148,9 @@ function App() {
   return (
     <main className="page-shell">
       <header className="site-header">
-        <a href="/" className="brand" aria-label="Home">
+        <span className="brand">
           Andrei Parkhomenko
-        </a>
+        </span>
         <p>Senior Software Developer / Solution Architect</p>
         <p>Almaty, Kazakhstan</p>
       </header>
@@ -177,11 +186,11 @@ function App() {
           <ul>
             {experiences.map((experience) => (
               <li key={experience.name}>
-                <a href={experience.url} target="_blank" rel="noreferrer">
+                <div className="list-row">
                   <span>{experience.name}</span>
                   <small>{experience.role}</small>
                   <sup>{experience.footnote}</sup>
-                </a>
+                </div>
               </li>
             ))}
           </ul>
@@ -192,7 +201,12 @@ function App() {
           <ul>
             {links.map((link) => (
               <li key={link.name}>
-                <a href={link.url} target={link.external ? '_blank' : undefined} rel={link.external ? 'noreferrer' : undefined}>
+                <a
+                  href={link.url}
+                  target={link.external ? '_blank' : undefined}
+                  rel={link.external ? 'noreferrer' : undefined}
+                  download={link.download || undefined}
+                >
                   <span>{link.name}</span>
                   <small>Open</small>
                   <sup>↗</sup>
@@ -213,7 +227,7 @@ function App() {
         <div>
           <p>2026</p>
         </div>
-        <a href="mailto:hello@example.com">Let&apos;s build something together.</a>
+        <p className="footer-message">Let&apos;s build something together.</p>
       </footer>
     </main>
   );
